@@ -17,7 +17,7 @@ app.use (
 );
 
 app.get('/', (req, res) => {
-    res.send({ 'message': 'Hello API Auth Service'});
+    res.send({ 'message': ' API Auth Service'});
 });
 
 const port = process.env.PORT || 6001;
