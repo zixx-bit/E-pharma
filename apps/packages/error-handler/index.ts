@@ -25,3 +25,31 @@ export class ValidationError extends AppError {
         super(message, 400, true, details)
     }
 }
+
+// Authentication error
+export class AuthError extends AppError {
+    constructor(message = "Unauthorized"){
+        super(message, 401);
+    }
+}
+
+// Forbidden error
+export class ForbiddenError extends AppError {
+    constructor(message = "Forbidden access", details?: any){
+        super(message, 403, details)
+    }
+}
+
+// dATABASE ERROR
+export class DatabaseError extends AppError {
+    constructor(message = "Database error", details?: any){
+        super(message, 500, true, details)
+    }
+}
+
+export class RateLimitError extends AppError {
+    constructor(message = "Too many requests, please try again later!", details?: any){
+        super(message, 429)
+    }
+}
+
