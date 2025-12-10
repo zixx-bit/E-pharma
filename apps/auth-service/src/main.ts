@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-
+import { errorMiddleware } from "../../../packages/error-handler/error-middleware.ts";
 
 
 const host = process.env.HOST ?? 'localhost';
@@ -19,6 +19,8 @@ app.use (
 app.get('/', (req, res) => {
     res.send({ 'message': ' API Auth Service'});
 });
+
+app.use(errorMiddleware);
 
 const port = process.env.PORT || 6001;
 const server = app.listen( Number(port), host, () => {
