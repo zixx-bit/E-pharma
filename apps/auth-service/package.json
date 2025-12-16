@@ -1,12 +1,22 @@
 {
   "name": "@epharma/auth-service",
   "version": "0.0.1",
-  "type":"module",
+  "type": "module",
   "private": true,
+  "prisma": {
+    "schema": "apps/auth-service/prisma/schema.prisma"
+  },
   "nx": {
     "targets": {
+      "prisma-generate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx prisma generate --schema=apps/auth-service/prisma/schema.prisma"
+        }
+      },
       "build": {
         "executor": "@nx/esbuild:esbuild",
+        "dependsOn": ["prisma-generate"],
         "outputs": [
           "{options.outputPath}"
         ],
@@ -111,6 +121,10 @@
     }
   },
   "dependencies": {
+    "@prisma/client": "^7.1.0",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^7.1.0"
   }
 }
