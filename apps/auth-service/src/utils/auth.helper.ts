@@ -1,6 +1,9 @@
 import crypto from "crypto";
 
 import { ValidationError } from "../../../../packages/error-handler/index.js";
+import { NextFunction } from "express";
+import redis from "../../../../packages/libs/redis";
+import { sendEmail } from "./sendMail/index.js";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,4 +21,15 @@ export const validateRegistrationData = (data: any, userType: "user" | "seller")
         
     }
 
+}
+
+export const checkOtpRestrictions =(email:string, next:NextFunction)={
+
+}
+
+export const sendOtp = async( name:string, email: string, template:string)=>{
+    const otp = crypto.randomInt(1000, 9999).toString();
+    await sendEmail(email, "Verify Your Email", template, {name, otp});
+    await redis.set(`otp:${email}`, otp, "EX", 300);
+    await redis.set(`otp_cooldown:${email}`, "true", "Ex", 60)
 }
