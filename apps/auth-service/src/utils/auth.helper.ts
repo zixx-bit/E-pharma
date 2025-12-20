@@ -2,7 +2,11 @@ import crypto from "crypto";
 
 import { ValidationError } from "../../../../packages/error-handler/index.js";
 import { NextFunction } from "express";
-import redis from "../../../../packages/libs/redis/index.js";
+import redis from "../../../../packages/libs/redis";
+// import * as redisModule from "../../../../packages/libs/redis/index.js";
+import { sendEmail } from "./sendMail/index.js";
+
+// const redis: any = (redisModule as any).default ?? redisModule;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,24 +22,30 @@ export const validateRegistrationData = (data: any, userType: "user" | "seller")
     if (!emailRegex.test(email)) {
         throw new ValidationError("Invalid email format!")
         
-    }
+    } 
 
 }
 
-export const checkOtpRestrictions =(email:string, next:NextFunction)=>{
+export const checkOtpRestrictions =async (email:string, next:NextFunction)=>{
     if ( await redis.get(`otp_lock:${email}`)) {
         return next(
             new ValidationError("Account locked due to multiple failed attempts! Try again after 30 minutes")
         )   
     }
 
-    if (await redis.get(`otp_spam_lock:${email}`)) {
+    if ( await redis.get(`otp_spam_lock:${email}`)) {
         return next(
             new ValidationError(
                 "Too many OTP requests! Please wait for 1 hour before requesting again."
             )
         );
         
+    }
+
+    if (await redis.get(`otp_cooldown:${email}`)) {
+        return next(
+            new ValidationError("Please wait 1 minute before requesting a new OTP!")
+        );
     }
 };
 
