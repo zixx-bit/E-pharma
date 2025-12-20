@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { validateRegistrationData } from "../utils/auth.helper.js"
+import { checkOtpRestrictions, validateRegistrationData } from "../utils/auth.helper.js"
 import prisma from "../../../../packages/libs/prisma/index.js";
 import { ValidationError } from "../../../../packages/error-handler/index.js";
 
@@ -16,6 +16,8 @@ export const userRegistration = async(req: Request, res: Response, next: NextFun
     };
 
     await checkOtpRestrictions(email, next);
+
+    await trackOtpRequests(email, next)
 
 
 }
