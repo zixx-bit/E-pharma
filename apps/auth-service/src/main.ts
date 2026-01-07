@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { errorMiddleware } from "../../packages/error-handler/error-middleware.ts"
+import { errorMiddleware } from '../../../packages/error-handler/error-middleware.js';
+// import { errorMiddleware } from "../../packages/error-handler/error-middleware.ts"
 import cookieParser from 'cookie-parser';
 
 
