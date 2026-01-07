@@ -3,6 +3,7 @@ import cors from 'cors';
 import { errorMiddleware } from '../../../packages/error-handler/error-middleware.js';
 // import { errorMiddleware } from "../../packages/error-handler/error-middleware.ts"
 import cookieParser from 'cookie-parser';
+import router from './routes/auth.router.js';
 
 
 const host = process.env.HOST ?? 'localhost';
@@ -24,6 +25,9 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 app.use(cookieParser());
+
+//Routes
+app.use("/api", router)
 app.use(errorMiddleware);
 
 const port = process.env.PORT || 6001;
