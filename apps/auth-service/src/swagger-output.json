@@ -22,10 +22,10 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Edd Michira"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "bumihouseke@gmail.com"
                 }
               }
             }
