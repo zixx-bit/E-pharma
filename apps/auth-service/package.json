@@ -1,109 +1,31 @@
 {
-  "name": "@epharma/auth-service",
+  "name": "@./auth-service",
   "version": "0.0.1",
-  "type": "module",
   "private": true,
-  "prisma": {
-    "schema": "apps/auth-service/prisma/schema.prisma"
+  "scripts": {
+    "dev": "node src/main.ts"
   },
   "nx": {
+    "name": "auth-service",
+    "projectType": "application",
+    "sourceRoot": "auth-servce/src",
     "targets": {
-      "prisma-generate": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx prisma generate --schema=apps/auth-service/prisma/schema.prisma"
-        }
-      },
-      "build": {
-        "executor": "@nx/esbuild:esbuild",
-        "dependsOn": ["prisma-generate"],
-        "outputs": [
-          "{options.outputPath}"
-        ],
-        "defaultConfiguration": "production",
-        "options": {
-          "platform": "node",
-          "outputPath": "apps/auth-service/dist",
-          "format": [
-            "cjs"
-          ],
-          "bundle": false,
-          "main": "apps/auth-service/src/main.ts",
-          "tsConfig": "apps/auth-service/tsconfig.app.json",
-          "assets": [
-            "apps/auth-service/src/assets"
-          ],
-          "esbuildOptions": {
-            "sourcemap": true,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        },
-        "configurations": {
-          "development": {},
-          "production": {
-            "generateLockfile": true,
-            "esbuildOptions": {
-              "sourcemap": false,
-              "outExtension": {
-                ".js": ".js"
-              }
-            }
-          }
-        }
-      },
-      "prune-lockfile": {
-        "dependsOn": [
-          "build"
-        ],
-        "cache": true,
-        "executor": "@nx/js:prune-lockfile",
-        "outputs": [
-          "{workspaceRoot}/apps/auth-service/dist/package.json",
-          "{workspaceRoot}/apps/auth-service/dist/package-lock.json"
-        ],
-        "options": {
-          "buildTarget": "build"
-        }
-      },
-      "copy-workspace-modules": {
-        "dependsOn": [
-          "build"
-        ],
-        "cache": true,
-        "outputs": [
-          "{workspaceRoot}/apps/auth-service/dist/workspace_modules"
-        ],
-        "executor": "@nx/js:copy-workspace-modules",
-        "options": {
-          "buildTarget": "build"
-        }
-      },
-      "prune": {
-        "dependsOn": [
-          "prune-lockfile",
-          "copy-workspace-modules"
-        ],
-        "executor": "nx:noop"
-      },
       "serve": {
-        "continuous": true,
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
           "build"
         ],
         "options": {
-          "buildTarget": "@epharma/auth-service:build",
+          "buildTarget": "auth-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@epharma/auth-service:build:development"
+            "buildTarget": "auth-service:build:development"
           },
           "production": {
-            "buildTarget": "@epharma/auth-service:build:production"
+            "buildTarget": "auth-service:build:production"
           }
         }
       },
@@ -111,20 +33,7 @@
         "options": {
           "passWithNoTests": true
         }
-      },
-      "docker:build": {
-        "dependsOn": [
-          "build",
-          "prune"
-        ]
       }
     }
-  },
-  "dependencies": {
-    "@prisma/client": "^7.1.0",
-    "express": "^4.21.2"
-  },
-  "devDependencies": {
-    "prisma": "^7.1.0"
   }
 }
