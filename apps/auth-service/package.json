@@ -1,5 +1,5 @@
 {
-  "name": "@epharma/auth-service",
+  "name": "@./auth-service",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,7 +8,7 @@
   "nx": {
     "name": "auth-service",
     "projectType": "application",
-    "sourceRoot": "auth-servce/src",
+    "sourceRoot": "auth-service/src",
     "targets": {
       "serve": {
         "executor": "@nx/js:node",
