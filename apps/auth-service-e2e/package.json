@@ -1,10 +1,10 @@
 {
-  "name": "@epharma/auth-service-e2e",
+  "name": "auth-service-e2e",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@epharma/auth-service"
+      "auth-service"
     ],
     "targets": {
       "e2e": {
@@ -17,8 +17,8 @@
           "passWithNoTests": true
         },
         "dependsOn": [
-          "@epharma/auth-service:build",
-          "@epharma/auth-service:serve"
+          "auth-service:build",
+          "auth-service:serve"
         ]
       }
     }
