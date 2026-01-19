@@ -2,9 +2,16 @@ const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join, resolve, dirname } = require('path');
 
 module.exports = {
+  target: 'node',
+
+  externals: {
+    '@prisma/client': 'commonjs @prisma/client',
+    'prisma': 'commonjs prisma'
+  },
+
   output: {
     path: join(__dirname, 'dist'),
-    // clean: true,
+    clean: true,
     // ...(process.env.NODE_ENV !== 'production' && {
     //   devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     // }),
@@ -23,6 +30,13 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
+      assets: [
+        {
+          input: 'prisma',
+          glob: '**/*',
+          output: 'prisma'
+        }
+      ],
       // assets: ["./auth-service/src/assets"],
       optimization: false,
       outputHashing: 'none',

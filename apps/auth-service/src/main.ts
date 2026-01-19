@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { errorMiddleware } from '../../../packages/error-handler/error-middleware.js';
+import { errorMiddleware } from '../../../packages/error-handler/error-middleware';
 // import { errorMiddleware } from "../../packages/error-handler/error-middleware.ts"
 import cookieParser from 'cookie-parser';
 import router from './routes/auth.router.js';
@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 
 
 
-const swaggerDocument = require("./swager-output.json");
+const swaggerDocument = require("./swagger-output.json");
 const host = process.env.HOST ?? 'localhost';
 // const port = process.env.PORT ? Number(process.env.PORT) : 6001;
 
