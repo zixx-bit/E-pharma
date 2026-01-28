@@ -29,3 +29,21 @@ export const userRegistration = async(req: Request, res: Response, next: NextFun
     return next(error);
   }
 }
+
+export const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {    
+    const {email, otp, password, name} = req.body;
+     if (!email || !otp || !password || !name ) {
+      return next( new ValidationError("All fields are required!"));
+    }
+    const isUserExisting = await prisma.users.findUnique({where: {email}});
+      if (isUserExisting) {
+        return next(new ValidationError("User already exists with this email!"));
+      }
+
+      await verifyOtp();
+  } catch (error) {
+    return next(error)
+    
+  }
+}
