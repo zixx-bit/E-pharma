@@ -38,7 +38,7 @@ app.get("/docs-json", (req, res) =>{
 //Routes
 app.use("/api", router)
 app.use(errorMiddleware);
-
+ 
 const port = process.env.PORT || 6001;
 const server = app.listen( Number(port), host, () => {
     console.log(`Auth service is running at http:/localhost:${port}/api`);
