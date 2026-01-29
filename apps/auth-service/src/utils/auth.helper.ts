@@ -82,7 +82,7 @@ export const verifyOtp = async(email: string, otp: string, next: NextFunction) =
             throw  new ValidationError("Too many failed attempts. Your account is locked for 30 minutes");
         }
         await redis.set(failedAttemptsKey, failedAttempts + 1, "EX", 300);
-             throw new ValidationError(`incorrect OTP. ${2 - failedAttempts} attemps left`);
+        throw new ValidationError(`Incorrect OTP! ${2 - failedAttempts} attemps left.`)
     };
 
     await redis.del(`otp:${email}`, failedAttemptsKey);
