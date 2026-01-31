@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import {
   checkOtpRestrictions,
+  handleForgotPassword,
   sendOtp,
   trackOtpRequests,
   validateRegistrationData,
@@ -91,17 +92,21 @@ export const loginUser = async (
       return next(new AuthError("Invalid email or password"));
     }
 
+      const ACCESS_TOKEN_SECRET="a4b18bb47881a21b79aa6449875e2927aa529349928a4bd9d95010b7d09740f1"
+      const REFRESH_TOKEN_SECRET="e20258a49e30bc6845f7a6c7cacba98b72be64fffee29effcacd7cfdd652b71b"
     // Generate access and refresh token
     const accessToken = jwt.sign(
       { id: user.id, role: "user" },
-      process.env.ACCESS_TOKEN_SECRET as string,
+      // process.env.ACCESS_TOKEN_SECRET as string,
+      ACCESS_TOKEN_SECRET,
       {
         expiresIn: "15m",
       },
     );
 
     const refreshToken  = jwt.sign({id: user.id, role:"user"},
-      process.env.REFRESH_TOKEN_SECRET as string,
+      // process.env.REFRESH_TOKEN_SECRET as string,
+      REFRESH_TOKEN_SECRET,
       {
         expiresIn: "7d",
       }
@@ -120,3 +125,7 @@ export const loginUser = async (
     return next(error);
   }
 };
+
+export const userForgotPassword = async (req:Request, res: Response, next: NextFunction) => {
+  await handleForgotPassword(req, res, next, "user")
+}
