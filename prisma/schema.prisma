@@ -1,11 +1,12 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "mongodb"
-  
+  url = "mongodb+srv://epharma:S1BJ5Cb5qIKZwn40@epharmashop.jnynl5t.mongodb.net/development"
+
 
 }
 
