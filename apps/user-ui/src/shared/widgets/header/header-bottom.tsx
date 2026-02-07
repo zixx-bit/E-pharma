@@ -1,5 +1,9 @@
 "use client";
-import { AlignLeft, ChevronDown } from "lucide-react";
+import { CartIcon } from "apps/user-ui/src/assets/svgs/cart-icon";
+import { ProfileIcon } from "apps/user-ui/src/assets/svgs/profile-icon";
+import { navItems } from "apps/user-ui/src/configs/contansts";
+import { AlignLeft, ChevronDown, HeartIcon } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const HeaderBottom = () => {
@@ -9,7 +13,7 @@ const HeaderBottom = () => {
   // ?track scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (window.screenY > 100) {
+      if (window.scrollY > 100) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
@@ -50,12 +54,51 @@ const HeaderBottom = () => {
           )}
 
           {/* Navigation links */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center ">
+            {navItems.map((i: NavItemsTypes, index: number) => (
+              <Link className="px-4 py-2 rounded-md hover:bg-gray-100 transition-all duration-300"
+               href={i.href} key={index}>
+                <span className="text-gray-500">{i.title}</span>
+              </Link>
+            ))}
+                      <div>
 
+          </div>
+            { isSticky && (
+              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
+                <Link
+                  href={"/login"}
+                  className="border-2 w-[40px] h-[40px] flex items-center justify-center rounded-full border-[#010f0c0a]"
+                >
+                  <ProfileIcon />
+                </Link>
+    
+                <Link href={"/login"}>
+                  <span className="block font-medium">Hello</span>
+                  <span className=" font-semibold">Sign In</span>
+                </Link>
+              </div>
+              <div className="flex items-center gap-5">
+                <Link href={"/wishlist"} className="relative">
+                  <HeartIcon />
+                  <div className="w-6 h-6 border-2 border-white bg-red-500 rounded-full flex items-center justify-center absolute top-[-10px] right-[-12px]">
+                    <span className="text-white font-medium text-sm">0</span>
+                  </div>
+                </Link>
+                <Link href={"/cart"} className="relative">
+                  <CartIcon />
+                  <div className="w-6 h-6 border-2 border-white bg-red-500 rounded-full flex items-center justify-center absolute top-[-10px] right-[-10px]">
+                    <span className="text-white font-medium text-sm">3</span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+            )}
           </div>
         </div>
       </div>
-      HeaderBottom
+      {/* HeaderBottom */}
     </div>
   );
 };
