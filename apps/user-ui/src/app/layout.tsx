@@ -3,8 +3,8 @@ import './global.css';
 import { Poppins, Roboto } from 'next/font/google';
 
 export const metadata = {
-  title: 'E-Pharma',
-  description: 'Online pharamcy system',
+  title: 'Afyanova Pharma',
+  description: 'Online pharmacy system',
 }
 
 const poppins = Poppins({
