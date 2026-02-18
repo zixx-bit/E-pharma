@@ -1,42 +1,75 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import{useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import React, { useState } from 'react'
+import Link from 'next/link';
+import GoogleButton from 'apps/user-ui/src/shared/google-button';
 
-type FormData ={
+type FormData = {
     email: string;
     password: string;
 }
-const Login= () => {
+const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [ServerError, setServerError] = useState<string | null>(null);
     const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData> ();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const onSubmit = (data: FormData) => {
         console.log(data);
     }
-  return (
-    <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
-        <h1 className='text-4xl font-Poppins font-semibold text-black text-center'>
-            Login
-        </h1>
-        <p className='text-center text-lg font-medium py-3 text-[#00000099]'>
-            Home.Login
-        </p>
-        <div className='w-full flex justify-center'>
-            <div className='md:w-[480px] p-8 bg-white shadow rounded-lg'>
-                <h3 className='text-3xl font-semibold text-center mb-2'>
-                    Login to AfyaNova Phamarcy
+    return (
+        <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
+            <h1 className='text-4xl font-Poppins font-semibold text-black text-center'>
+                Login
+            </h1>
+            <p className='text-center text-lg font-medium py-3 text-[#00000099]'>
+                Home.Login
+            </p>
+            <div className='w-full flex justify-center'>
+                <div className='md:w-[480px] p-8 bg-white shadow rounded-lg'>
+                    <h3 className='text-3xl font-semibold text-center mb-2'>
+                        Login to AfyaNova Phamarcy
+                    </h3>
+                    <p className='text-center text-gray-500 mb-4'>
+                        Don't have an account?  {" "}
+                        <Link href={"/signup"} className='text-blue-500'>
+                            Sign up
+                        </Link>
+                    </p>
+                    <GoogleButton />
+                    <div className='flex items-center my-5 text-gray-400 text-sm'>
+                        <div className='flex-1 border-t border-gray-300' />
+                        <span className='px-3'> or Sign in with Email</span>
+                        <div className='flex-1 border-t border-gray-300'></div>
+                    </div>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <label className='block text-gray-700 mb-1'>Email</label>
+                        <input 
+                        type='email'
+                        placeholder='support@afyanova.co.ke'
+                        className='w-full p-2 border border-gray-300 outline-0 rounded mb-1'
+                        {...register("email", {
+                            required: "Email is requires",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Invalid email address",
+                            }
+                        })}>
+                        </input>
+                        {errors.email && (
+                            <p className='text-red-500 text-sm'>
+                                {String(errors.email.message)}
+                            </p>
+                        )}
 
-                </h3>
+                    </form>
+                </div>
 
             </div>
-
         </div>
-    </div>
-  )
+    )
 }
 
 export default Login;
