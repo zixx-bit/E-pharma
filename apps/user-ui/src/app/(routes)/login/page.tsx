@@ -12,7 +12,7 @@ type FormData = {
 }
 const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [ServerError, setServerError] = useState<string | null>(null);
+    const [serverError, setServerError] = useState<string | null>(null);
     const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
@@ -110,6 +110,11 @@ const Login = () => {
                         className='w-full text-lg cursor-pointer bg-black text-white py-2 rounded-lg'>
                           Login  
                         </button>
+                        {serverError && (
+                            <p className='text-red-500 text-sm mt-2'>
+                                {serverError}
+                            </p>
+                        )}
 
 
                     </form>
