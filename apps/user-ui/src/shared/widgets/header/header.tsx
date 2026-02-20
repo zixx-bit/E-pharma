@@ -11,7 +11,7 @@ const Header = () => {
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
         <div>
           <Link href="/">
-            <span className="text-2xl font-[500] text-[#29d4aa]">
+            <span className="text-2xl font-[500] text-[#2abe79]">
               Afyanova Pharma
             </span>
           </Link>
