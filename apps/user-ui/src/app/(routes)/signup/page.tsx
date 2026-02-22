@@ -29,6 +29,28 @@ const Signup = () => {
     const onSubmit = (data: FormData) => {
         console.log(data);
     }
+
+    const handleOtpChange = (index:number, value:string) =>{
+        if(!/^[0-9]?$/.test(value)) return;
+
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
+        if (value && index < inputRefs.current.length - 1)  {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleOtpKeyDown = (index: number, e:React.KeyboardEvent<HTMLInputElement>)=>{
+        if (e.key === "Backspace" && !otp[index] && index > 0) {
+            inputRefs.current[index-1]?.focus();
+        }
+    }
+
+
+
+    
     return (
         <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
             <h1 className='text-4xl font-Poppins font-semibold text-black text-center'>
@@ -145,8 +167,10 @@ const Signup = () => {
                                         }
                                     }}
                                     maxLength={1}
-                                    className='w-12 h-12 text-center border border-gray-300 outline-none !rounded'>
-
+                                    className='w-12 h-12 text-center border border-gray-300 outline-none !rounded'
+                                    value={digit}
+                                    onChange={(e) => handleOtpChange(index, e.target.value)}>
+                                    
                                     </input>
                                 ))}
                             </div>
