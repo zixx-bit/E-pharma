@@ -1,19 +1,28 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Link from 'next/link';
 import GoogleButton from 'apps/user-ui/src/shared/google-button';
 import { Eye, EyeOff } from 'lucide-react';
 
 type FormData = {
+    name: string;
     email: string;
     password: string;
 }
-const Login = () => {
+const Signup = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
-    const [rememberMe, setRememberMe] = useState(false);
+    const [canResend, setCanResend] = useState(true);
+    const [showOtp, setShowOtp] = useState(true);
+    const [timer, setTimer] = useState(60);
+    const [otp, setOtp] = useState(["", "", "", ""]);
+    const [userData, setUserData] = useState<FormData | null>(null);
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+
+
     const router = useRouter
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
@@ -23,20 +32,20 @@ const Login = () => {
     return (
         <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
             <h1 className='text-4xl font-Poppins font-semibold text-black text-center'>
-                Login
+                Sign Up
             </h1>
             <p className='text-center text-lg font-medium py-3 text-[#00000099]'>
-                Home.Login
+                Home.Sign Up
             </p>
             <div className='w-full flex justify-center'>
                 <div className='md:w-[480px] p-8 bg-white shadow rounded-lg'>
                     <h3 className='text-3xl font-semibold text-center mb-2'>
-                        Login to AfyaNova Phamarcy
+                        Sign up to AfyaNova Phamarcy
                     </h3>
                     <p className='text-center text-gray-500 mb-4'>
-                        Don't have an account?  {" "}
-                        <Link href={"/signup"} className='text-blue-500'>
-                            Sign up
+                    Already have an account ?  {" "}
+                        <Link href={"/login"} className='text-blue-500'>
+                            Log In
                         </Link>
                     </p>
                     <GoogleButton />
@@ -45,7 +54,23 @@ const Login = () => {
                         <span className='px-3'> or Sign in with Email</span>
                         <div className='flex-1 border-t border-gray-300'></div>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    {!showOtp ?     (<form onSubmit={handleSubmit(onSubmit)}>
+                    <label className='block text-gray-700 mb-1'>Name</label>
+                        <input
+                            type='text'
+                            placeholder='Enter your name'
+                            className='w-full p-2 border border-gray-300 outline-0 !rounded mb-1'
+                            {...register("name", {
+                                required: "Name is required",
+                              
+                            })}>
+                        </input>
+                        {errors.name && (
+                            <p className='text-red-500 text-sm'>
+                                {String(errors.name.message)}
+                            </p>
+                        )}
+
                         <label className='block text-gray-700 mb-1'>Email</label>
                         <input
                             type='email'
@@ -92,23 +117,10 @@ const Login = () => {
                             </p>
                         )}
                         </div>
-                        <div className='flex justify-between items-center my-4'>
-                            <label className='flex items-center text-gray-600'>
-                                <input
-                                type='checkbox'
-                                className='mr-2'
-                                checked={rememberMe}
-                                onChange={() => setRememberMe(!rememberMe)}>
-                                </input>
-                                Remember me
-                            </label>
-                            <Link href={"/forgot-password"} className='text-blue-500 text-sm'>
-                            Forgot password
-                            </Link>
-                        </div>
+                      
                         <button type='submit'
-                        className='w-full text-lg cursor-pointer bg-black text-white py-2 rounded-lg'>
-                          Login  
+                        className='w-full text-lg cursor-pointer mt-4 bg-black text-white py-2 rounded-lg'>
+                          Sign Up  
                         </button>
                         {serverError && (
                             <p className='text-red-500 text-sm mt-2'>
@@ -117,7 +129,30 @@ const Login = () => {
                         )}
 
 
-                    </form>
+                    </form>) : (
+                        <div>
+                            <h3 className='text-xl font-semibold text-center mb-4'>
+                                Enter OTP
+                            </h3>
+                            <div className='flex justify-center gap-6'>
+                                {otp?.map((digit, index) => (
+                                    <input
+                                    key={index}
+                                    type='text'
+                                    ref={(el)=>{
+                                        if (el) inputRefs.current[index]=el; {
+                                            
+                                        }
+                                    }}
+                                    maxLength={1}
+                                    className='w-12 h-12 text-center border border-gray-300 outline-none !rounded'>
+
+                                    </input>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                
                 </div>
 
             </div>
@@ -125,4 +160,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Signup;
