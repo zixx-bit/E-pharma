@@ -50,7 +50,7 @@ const Signup = () => {
 
 
 
-    
+
     return (
         <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
             <h1 className='text-4xl font-Poppins font-semibold text-black text-center'>
@@ -169,11 +169,14 @@ const Signup = () => {
                                     maxLength={1}
                                     className='w-12 h-12 text-center border border-gray-300 outline-none !rounded'
                                     value={digit}
-                                    onChange={(e) => handleOtpChange(index, e.target.value)}>
-                                    
+                                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                                    onKeyDown={(e) => handleOtpKeyDown(index, e)}>                                    
                                     </input>
                                 ))}
                             </div>
+                            <button className='w-full mt-4 text-lg cursor-pointer bg-blue-500 text-white py-2 rounded-lg'>
+                                Verify OTP
+                            </button>
                         </div>
                     )}
                 
