@@ -1,6 +1,7 @@
 import { Header } from '../shared/widgets/header';
 import './global.css';
 import { Poppins, Roboto } from 'next/font/google';
+import Providers from './providers';
 
 export const metadata = {
   title: 'Afyanova Pharma',
@@ -27,8 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`bg-gray-100 ${poppins.variable} ${roboto.variable}`}>
+        <Providers>
         <Header />
-        {children}</body>
+        {children}
+        </Providers>
+        </body>
     </html>
   )
 }
