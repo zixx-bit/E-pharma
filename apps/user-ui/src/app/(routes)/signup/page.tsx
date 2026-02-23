@@ -48,6 +48,10 @@ const Signup = () => {
         }
     }
 
+    const resendOtp = () =>{
+        
+    }
+
 
 
 
@@ -177,6 +181,16 @@ const Signup = () => {
                             <button className='w-full mt-4 text-lg cursor-pointer bg-blue-500 text-white py-2 rounded-lg'>
                                 Verify OTP
                             </button>
+                            <p className='text-center text-sm
+                             mt-4'>
+                                {canResend ? (
+                                    <button onClick={resendOtp}
+                                    className='text-blue-500 cursor-pointer'>
+                                        Resend OTP
+                                    </button>
+                                ): (`Resend OTP in ${timer}s`)}
+
+                            </p>
                         </div>
                     )}
                 
