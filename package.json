@@ -10,7 +10,7 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^6.5.0",
-    "@tanstack/react-query": "^5.90.20",
+    "@tanstack/react-query": "^5.90.21",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
