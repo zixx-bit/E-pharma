@@ -15,7 +15,7 @@ const Signup = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
     const [canResend, setCanResend] = useState(true);
-    const [showOtp, setShowOtp] = useState(true);
+    const [showOtp, setShowOtp] = useState(false);
     const [timer, setTimer] = useState(60);
     const [otp, setOtp] = useState(["", "", "", ""]);
     const [userData, setUserData] = useState<FormData | null>(null);
