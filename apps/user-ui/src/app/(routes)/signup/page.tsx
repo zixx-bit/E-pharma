@@ -6,7 +6,8 @@ import Link from 'next/link';
 import GoogleButton from 'apps/user-ui/src/shared/google-button';
 import { Eye, EyeOff } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { toast } from 'react-hot-toast';
 
 type FormData = {
     name: string;
@@ -25,7 +26,7 @@ const Signup = () => {
 
 
 
-    const router = useRouter
+    const router = useRouter();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const startResendTimer = () => {
@@ -36,7 +37,7 @@ const Signup = () => {
                     setCanResend(true);
                     return 0;
                 }
-                return prev-1;                
+                return prev - 1;
             });
         }, 1000);
     };
@@ -44,14 +45,35 @@ const Signup = () => {
     const signupMutation = useMutation({
         mutationFn: async (data: FormData) => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/api/user-registration`, data);
-            return response.data; 
+            return response.data;
         },
-        onSuccess: (_, FormData)=>{
+        onSuccess: (_, FormData) => {
             setUserData(FormData);
             setShowOtp(true);
             setCanResend(false);
             setTimer(60);
             startResendTimer();
+        },
+    });
+
+    const verifyOtpMutation = useMutation({
+        mutationFn: async () => {
+            if (!userData) {
+                return;
+            }
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/api/verify-user`, {
+                ...userData,
+                otp: otp.join(""),
+            });
+            return response.data;
+        },
+        onSuccess: () => {
+            router.push("/login");
+            toast.success("OTP verified successfully");
+
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 
@@ -178,7 +200,7 @@ const Signup = () => {
                         <button type='submit'
                             disabled={signupMutation.isPending}
                             className='w-full text-lg cursor-pointer mt-4 bg-black text-white py-2 rounded-lg'>
-                           {signupMutation.isPending ? "Signing up..." : "Sign up"}
+                            {signupMutation.isPending ? "Signing up..." : "Sign up"}
                         </button>
                         {serverError && (
                             <p className='text-red-500 text-sm mt-2'>
@@ -210,8 +232,10 @@ const Signup = () => {
                                     </input>
                                 ))}
                             </div>
-                            <button className='w-full mt-4 text-lg cursor-pointer bg-blue-500 text-white py-2 rounded-lg'>
-                                Verify OTP
+                            <button className='w-full mt-4 text-lg cursor-pointer bg-blue-500 text-white py-2 rounded-lg'
+                                disabled={verifyOtpMutation.isPending}
+                                onClick={() => verifyOtpMutation.mutate()}>
+                                {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
                             </button>
                             <p className='text-center text-sm
                              mt-4'>
@@ -221,8 +245,13 @@ const Signup = () => {
                                         Resend OTP
                                     </button>
                                 ) : (`Resend OTP in ${timer}s`)}
-
                             </p>
+                            {verifyOtpMutation?.isError && verifyOtpMutation?.error instanceof AxiosError && (
+                                <p className='text-red-500 text-sm mt-2'>
+                                    {verifyOtpMutation.error.response?.data.message ||
+                                    verifyOtpMutation.error.message}
+                                </p>
+                            )}
                         </div>
                     )}
 
