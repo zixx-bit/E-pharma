@@ -199,7 +199,7 @@ const Signup = () => {
 
                         <button type='submit'
                             disabled={signupMutation.isPending}
-                            className='w-full text-lg cursor-pointer mt-4 bg-black text-white py-2 rounded-lg'>
+                            className='w-full text-lg cursor-pointer disabled:opacity-80 mt-4 bg-black text-white py-2 rounded-lg'>
                             {signupMutation.isPending ? "Signing up..." : "Sign up"}
                         </button>
                         {serverError && (
@@ -207,6 +207,12 @@ const Signup = () => {
                                 {serverError}
                             </p>
                         )}
+                         {signupMutation?.isError && signupMutation?.error instanceof AxiosError && (
+                                <p className='text-red-500 text-sm mt-2'>
+                                    {signupMutation.error.response?.data.message ||
+                                    signupMutation.error.message}
+                                </p>
+                            )}
 
 
                     </form>) : (
