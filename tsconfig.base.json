@@ -17,10 +17,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "paths":{
-      "@packages/*": [
-        "packages/*"
-      ]
+    "paths": {
+      "@packages/*": ["packages/*"]
     }
     // "customConditions": ["@epharma/source"]
   }
