@@ -1,7 +1,6 @@
 import crypto from "crypto";
-
 import { ValidationError } from "../../../../packages/error-handler/index.js";
-import { NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import redis from "../../../../packages/libs/redis";
 // import * as redisModule from "../../../../packages/libs/redis/index.js";
 import { sendEmail } from "./sendMail/index.js";
@@ -13,7 +12,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const validateRegistrationData = (
   data: any,
-  userType: "user" | "seller"
+  userType: "user" | "seller",
 ) => {
   const { name, email, password, phone_number, country } = data;
 
@@ -32,27 +31,27 @@ export const validateRegistrationData = (
 };
 export const checkOtpRestrictions = async (
   email: string,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (await redis.get(`otp_lock:${email}`)) {
     return next(
       new ValidationError(
-        "Account locked due to multiple failed attempts! Try again after 30 minutes"
-      )
+        "Account locked due to multiple failed attempts! Try again after 30 minutes",
+      ),
     );
   }
 
   if (await redis.get(`otp_spam_lock:${email}`)) {
     return next(
       new ValidationError(
-        "Too many OTP requests! Please wait for 1 hour before requesting again."
-      )
+        "Too many OTP requests! Please wait for 1 hour before requesting again.",
+      ),
     );
   }
 
   if (await redis.get(`otp_cooldown:${email}`)) {
     return next(
-      new ValidationError("Please wait 1 minute before requesting a new OTP!")
+      new ValidationError("Please wait 1 minute before requesting a new OTP!"),
     );
   }
 };
@@ -64,8 +63,8 @@ export const trackOtpRequests = async (email: string, next: NextFunction) => {
     await redis.set(`otp_spam_lock:${email}`, "locked", "EX", 300);
     return next(
       new ValidationError(
-        "Too many OTP requests. Please wait 1 hour before requesting again."
-      )
+        "Too many OTP requests. Please wait 1 hour before requesting again.",
+      ),
     );
   }
   await redis.set(otpRequestKey, otpRequests + 1, "EX", 600);
@@ -73,12 +72,12 @@ export const trackOtpRequests = async (email: string, next: NextFunction) => {
 export const sendOtp = async (
   name: string,
   email: string,
-  template: string
+  template: string,
 ) => {
   const otp = crypto.randomInt(1000, 9999).toString();
   await sendEmail(email, "Verify Your Email", template, { name, otp });
   await redis.set(`otp:${email}`, otp, "EX", 3600);
-  await redis.set(`otp_cooldown:${email}`, "true", "EX", 60);
+  await redis.set(`otp_cooldown:${email}`, "true", "EX", 180);
 };
 
 export const verifyOtp = async (email: string, otp: string) => {
@@ -95,12 +94,12 @@ export const verifyOtp = async (email: string, otp: string) => {
       await redis.set(`otp_lock:${email}`, "locked", "EX", 1800);
       await redis.del(`otp:${email}`, failedAttemptsKey);
       throw new ValidationError(
-        "Too many failed attempts. Your account is locked for 30 minutes"
+        "Too many failed attempts. Your account is locked for 30 minutes",
       );
     }
     await redis.set(failedAttemptsKey, failedAttempts + 1, "EX", 3600);
     throw new ValidationError(
-      `Incorrect OTP! ${2 - failedAttempts} attemps left.`
+      `Incorrect OTP! ${2 - failedAttempts} attemps left.`,
     );
   }
 
@@ -111,7 +110,7 @@ export const handleForgotPassword = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  userType: "user" | "seller"
+  userType: "user" | "seller",
 ) => {
   try {
     const { email } = req.body;
@@ -130,10 +129,10 @@ export const handleForgotPassword = async (
     await trackOtpRequests(email, next);
 
     // generate otp and send email
-    await sendOtp(email, user.name, "forgot-password-user-mail");
+    await sendOtp(user.name, email, "forgot-password-user.email");
     res
       .status(200)
-      .json({ message: "OTP sent to email. Please verufy your account." });
+      .json({ message: "OTP sent to email. Please verify your account." });
   } catch (error) {
     next(error);
   }

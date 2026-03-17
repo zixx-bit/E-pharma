@@ -24,17 +24,16 @@ const HeaderBottom = () => {
   }, []);
   return (
     <div
-      className={`w-full transition-all duration-300 ${isSticky ? "fixed top-0 left-0 z-[100] bg-white shadow-lg" : "relative"
-        }`}
+      className={`w-full transition-all duration-300 ${isSticky ? "fixed top-0 left-0 z-[100] bg-white shadow-lg" : "relative"}`}
     >
       <div
-        className={`w-[80%] relative m-auto flex items-center justify-between ${isSticky ? "pt-3" : "py-0"
-          }`}
+        className={`w-[80%] relative m-auto flex items-center justify-between ${isSticky ? "pt-3" : "py-0"}`}
       >
         {/* All dropdowns */}
-        <div className={`w-[260px] ${isSticky && 'mb-2'} cursor-pointer flex items-center justify-between px-5 h-[50px] bg-[#2489ff] `
-        }
-          onClick={() => setShow(!show)}>
+        <div
+          className={`w-[260px] ${isSticky && 'mb-2'} cursor-pointer flex items-center justify-between px-5 h-[50px] bg-[#2489ff]`}
+          onClick={() => setShow(!show)}
+        >
           <div className="flex items-center gap-2">
             <AlignLeft color="white" />
             <span className="text-white font-medium">All Categories</span>
@@ -44,10 +43,8 @@ const HeaderBottom = () => {
         <div>
           {/* Dropdown menu */}
           {show && (
-            <div className={`absolute left-0 ${isSticky ? "top-[70px]" : "top-[50px]"} 
-            w-[260px] h-[400px] bg-[#f5f5f5] shadow-md rounded-lg p-4`}
-            
-            
+            <div
+              className={`absolute left-0 ${isSticky ? "top-[70px]" : "top-[50px]"} w-[260px] h-[400px] bg-[#f5f5f5] shadow-md rounded-lg p-4`}
             >
             </div>
 
@@ -61,10 +58,7 @@ const HeaderBottom = () => {
                 <span className="text-gray-500">{i.title}</span>
               </Link>
             ))}
-                      <div>
-
-          </div>
-            { isSticky && (
+            {isSticky && (
               <div className="flex items-center gap-8">
               <div className="flex items-center gap-2">
                 <Link

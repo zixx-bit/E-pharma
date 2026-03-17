@@ -95,7 +95,7 @@ const Login = () => {
                                 placeholder='Min. 6 characters'
                                 className='w-full p-2 border border-gray-300 outline-0 !rounded mb-1'
                                 {...register("password", {
-                                    required: "Password is requires",
+                                    required: "Password is required",
                                     minLength: {
                                         value: 6,
                                         message: "Password must be at least 6 characters",
@@ -129,9 +129,9 @@ const Login = () => {
                             </Link>
                         </div>
                         <button type='submit'
-                        disabled={loginMutation.isPending}
+                            disabled={loginMutation.isPending}
                             className='w-full text-lg cursor-pointer disabled:opacity-80 bg-black text-white py-2 rounded-lg'>
-                            {loginMutation?.isPending ? "Loggin in... ": "Login"}
+                            {loginMutation?.isPending ? "Loggin in... " : "Login"}
                         </button>
                         {serverError && (
                             <p className='text-red-500 text-sm mt-2'>
@@ -142,7 +142,6 @@ const Login = () => {
 
                     </form>
                 </div>
-
             </div>
         </div>
     )
