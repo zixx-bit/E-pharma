@@ -6,11 +6,11 @@ import path from "path";
 dotenv.config();
 // console.log(process.env.SMTP_HOST)
 
-const SMTP_USER = "bumihouseke@gmail.com"
-const SMTP_PASS = "igzf wldv tqnx yydl"
-const SMTP_PORT = 587
-const SMTP_SERVICE = "gmail"
-const SMTP_HOST = "smtp.gmail.com"
+const SMTP_USER = ""
+const SMTP_PASS = ""
+const SMTP_PORT = 
+const SMTP_SERVICE = ""
+const SMTP_HOST = ""
 
 const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
