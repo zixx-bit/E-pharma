@@ -102,11 +102,12 @@ const Signup = () => {
     }
 
     const resendOtp = () => {
+        if (!userData) {
+            return;
+        }
+        signupMutation.mutate(userData);
 
     }
-
-
-
 
     return (
         <div className='w-full py-10 min-h-[85vh] bg-[#f1f1f1] '>
@@ -207,12 +208,12 @@ const Signup = () => {
                                 {serverError}
                             </p>
                         )}
-                         {signupMutation?.isError && signupMutation?.error instanceof AxiosError && (
-                                <p className='text-red-500 text-sm mt-2'>
-                                    {signupMutation.error.response?.data.message ||
+                        {signupMutation?.isError && signupMutation?.error instanceof AxiosError && (
+                            <p className='text-red-500 text-sm mt-2'>
+                                {signupMutation.error.response?.data.message ||
                                     signupMutation.error.message}
-                                </p>
-                            )}
+                            </p>
+                        )}
 
 
                     </form>) : (
@@ -255,7 +256,7 @@ const Signup = () => {
                             {verifyOtpMutation?.isError && verifyOtpMutation?.error instanceof AxiosError && (
                                 <p className='text-red-500 text-sm mt-2'>
                                     {verifyOtpMutation.error.response?.data.message ||
-                                    verifyOtpMutation.error.message}
+                                        verifyOtpMutation.error.message}
                                 </p>
                             )}
                         </div>
