@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 
-const redis = new Redis("rediss://default:AfukAAIncDIyYjhhMmExMWM3NzM0ZTA0ODMzMWYzZGQ4NWUwZjVhOHAyNjQ0MjA@charmed-sloth-64420.upstash.io:6379");
+const redis = new Redis("");
 [{
 	"resource": "/g:/projects/goodlife/epharma/apps/auth-service/src/utils/auth.helper.ts",
 	"owner": "typescript",
